@@ -4,6 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from models.user_models import Base
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -60,6 +61,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Custom exception handler for HTTPException
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"status": "error", "data": {"detail": exc.detail}},
+    )
 
 async def get_db():
     async with SessionLocal() as db:
