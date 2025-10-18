@@ -1,4 +1,4 @@
-# 🛂 User Onboarding System
+# 🛂 User Onboarding System 
 
 This repository contains a complete user onboarding system built with **FastAPI**, supporting:
 
